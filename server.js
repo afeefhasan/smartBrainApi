@@ -41,7 +41,7 @@ const connectToDatabase = async () => {
 connectToDatabase();
 
 app.get('/',(req,res)=>{
-    res.json(database.users)
+    res.json('it is working')
 })
 app.post('/clarifai',
 (req,res)=>{
@@ -130,12 +130,11 @@ app.post('/signup',
 app.get('/profile/:id', (req,res) => {
     const {id}=req.params;
     let found=false;
-    database.users.forEach(user=>{
-        if (user.id===id){
-            found=true;
-            return res.json(user);
-        }
-    })
+    const user=UsersSchemas.findById(id,{password:0});
+    if(user){
+        found=true;
+        res.json(user);
+    }
     if (! found){
         res.status(404).json('no such users')
     }
